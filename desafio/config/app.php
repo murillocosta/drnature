@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\TranslationServiceProvider;
 
 return [
 
@@ -83,7 +84,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt-BR',
 
     /*
     |--------------------------------------------------------------------------
@@ -96,8 +97,13 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'pt-BR',
 
+
+    'available_locales' => [
+        'pt-BR' => 'Português do Brasil',
+
+    ],
     /*
     |--------------------------------------------------------------------------
     | Faker Locale
@@ -168,6 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        TranslationServiceProvider::class
     ])->toArray(),
 
     /*

@@ -14,7 +14,17 @@
 
 <body>
     <div class="container bg-light">
-        <form class='mt-5'>
+        <form action="/pedidos" method="POST" class='mt-5'>
+            @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             {{-- Dados Pessoais --}}
             <div class="row">
                 <div class="col-12">
@@ -41,10 +51,10 @@
                             </svg>
                         </span>
 
-                        <input type="email" name="email" id="email" class=""
+                        <input type="email" name="email" id="email" class="" value="{{ old('email') }}"
                             placeholder="nome@exemplo.com">
                         <label for="email" class="form-label mb-1">SEU E-MAIL</label>
-                        <div class="invalid-feedback">Informe um endereço de e-mail válido.</div>
+
                     </div>
                 </div>
             </div>
@@ -53,9 +63,11 @@
             <div class="row">
                 <div class="col-6">
                     <div class="mb-3 form-label__container">
-                        <input type="text" name="nome" id="nome" class="" placeholder="Nome completo">
+                        <input type="text" name="nome" id="nome" class="" placeholder="Nome completo"
+                            value="{{ old('nome') }}">
                         <label for="nome" class="form-label ml-1">SEU NOME COMPLETO</label>
-                        <div class="invalid-feedback">Informe um nome válido.</div>
+
+
                     </div>
                 </div>
 
@@ -63,18 +75,20 @@
                 {{-- telefone --}}
                 <div class="col-3">
                     <div class="mb-3 form-label-group form-label__container">
-                        <input type="tel" name="telefone" id="telefone" class=" " placeholder="">
-                        <label for="telefone" class="form-label ml-1">CELULAR (DDD)</label>
-                        <div class="invalid-feedback">Informe número válido.</div>
+                        <input type="text" name="celular" id="celular" class=" " placeholder=""
+                            value="{{ old('celular') }}">
+                        <label for="celular" class="form-label ml-1">CELULAR (DDD)</label>
+
                     </div>
                 </div>
                 {{-- fim telefone --}}
                 {{-- cpf --}}
                 <div class="col-3">
                     <div class="mb-3 form-label__container">
-                        <input type="text" name="cpf" id="cpf" class=" " placeholder="">
+                        <input type="text" name="cpf" id="cpf" class=" " placeholder=""
+                            value="{{ old('cpf') }}">
                         <label for="cpf" class="form-label ml-1">CPF</label>
-                        <div class="invalid-feedback">Informe um CPF válido.</div>
+
                     </div>
                 </div>
                 {{-- fim cpf --}}
@@ -110,7 +124,7 @@
 
                         <input type="text" name="cep" id="cep" class="" placeholder="">
                         <label for="email" class="form-label mb-1">CEP DO ENDEREÇO</label>
-                        <div class="invalid-feedback">Informe um CEP válido.</div>
+
                     </div>
                 </div>
             </div>
@@ -129,7 +143,7 @@
                             </svg>
                         </span>
 
-                        <input type="text" name="cep" id="cep" placeholder="Logradouro">
+                        <input type="text" name="logradouro" id="logradouro" placeholder="Logradouro">
                         <label for="email" class="form-label mb-1">ENDEREÇO</label>
 
                     </div>
@@ -138,9 +152,9 @@
                 {{-- Nº RUA --}}
                 <div class="col-2">
                     <div class="mb-3 form-label__container">
-                        <input type="text" name="numeroRUa" id="numeroRUa" class=" " placeholder="">
-                        <label for="numeroRUa" class="form-label ml-1">NÚMERO</label>
-                        <div class="invalid-feedback">Informe um número válido.</div>
+                        <input type="text" name="numero" id="numero" class=" " placeholder="">
+                        <label for="numero" class="form-label ml-1">NÚMERO</label>
+
                     </div>
                 </div>
             </div>
@@ -173,7 +187,8 @@
                 {{-- ESTADO --}}
                 <div class="col-2">
                     <div class="mb-3 form-label__container">
-                        <input type="text" name="estado" id="estado" class=" " placeholder="">
+                        <input maxlength="2" type="text" name="estado" id="estado" class=" "
+                            placeholder="">
                         <label for="estado" class="form-label ml-1">ESTADO</label>
                     </div>
                 </div>
@@ -183,10 +198,11 @@
             <div class="row pb-4">
                 <p class="instrucoes">Opções de Entrega:</p>
                 <section>
+                    <input type="hidden" name="entrega" id="entrega" value="Ecônomico">
                     <div class="mb-2">
-                        <div class="col-12 entrega d-flex justify-between align-middle">
+                        <div class="col-12 entrega d-flex justify-between align-middle entrega-inativa">
                             <div class="d-flex justify-start col-11">
-                                <div class="small-circle mt-1"></div>
+                                <div class="small-circle mt-1" id='circle-1'></div>
                                 <div class="mx-2">
                                     <h3>Econômico
                                     </h3>
@@ -199,7 +215,7 @@
                     <div class="mb-2">
                         <div class="col-12 entrega d-flex justify-between align-middle entrega-inativa">
                             <div class="d-flex justify-start col-11">
-                                <div class="small-circle small-circle-inativo mt-1"></div>
+                                <div class="small-circle mt-1 small-circle-inativo" id='circle-2'></div>
                                 <div class="mx-2">
                                     <h3>Expresso
                                     </h3>
@@ -228,7 +244,10 @@
                         </div>
                     </div>
                     <div class="col-6 ">
-                        <div class="btn float-end btn-primary d-flex align-middle justify-center">
+
+
+                        <button type="submit" value="CONTINUAR"
+                            class="btn float-end btn-primary d-flex align-middle justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round"
@@ -238,16 +257,22 @@
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                             <p class="btn-text mb-2">CONTINUAR</p>
-                        </div>
+                        </button>
+
+
                     </div>
                 </div>
             </div>
         </form>
     </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="/js/cep.js"></script>
+    <script src="/js/masks.js"></script>
     <script src="/js/scripts.js"></script>
 </body>
 

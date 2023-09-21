@@ -17,4 +17,5 @@ use App\Http\Controllers\SubmitController;
 
 Route::get('/', [IndexController::class, 'index']);
 
-Route::get('/result', [SubmitController::class, 'result']);
+Route::get('/pedidos', [SubmitController::class, 'pedidos']);
+Route::post('/pedidos', [SubmitController::class, 'store']);
